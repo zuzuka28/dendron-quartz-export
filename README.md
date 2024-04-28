@@ -1,6 +1,6 @@
 # dendron-quartz-export
 
-This is a utility for exporting notes [dendron](https://www.dendron.so) in [quartz](https://quartz.jzhao .xyz)
+This is a utility for exporting notes [dendron](https://www.dendron.so) in [quartz](https://quartz.jzhao.xyz)
 
 # Features
 
