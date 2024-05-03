@@ -2,7 +2,9 @@ package exporter
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -98,9 +100,31 @@ func (e *Exporter) processNote(fname string) error {
 	return nil
 }
 
-func (e *Exporter) fixFileHierarchy(_ context.Context) error {
+func (e *Exporter) fixFileHierarchy(ctx context.Context) error {
 	if err := moveFile(e.cfg.ExportPath+"root.md", e.cfg.ExportPath+"index.md"); err != nil {
 		return fmt.Errorf("fix file hierarchy : %w", err)
+	}
+
+	noteFnames, err := crawlNotes(ctx, e.cfg.ExportPath)
+	if err != nil {
+		return fmt.Errorf("process notes: %w", err)
+	}
+
+	for _, fname := range noteFnames {
+		dname := strings.TrimRight(fname, ".md")
+
+		_, err := os.Stat(dname)
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return nil
+		}
+
+		if errors.Is(err, os.ErrNotExist) {
+			continue
+		}
+
+		if err := moveFile(fname, dname+"/"+getFilename(fname)); err != nil {
+			return fmt.Errorf("process notes: %w", err)
+		}
 	}
 
 	return nil

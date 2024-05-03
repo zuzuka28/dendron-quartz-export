@@ -22,6 +22,11 @@ func extractWikilinkTarget(wikilink string) string {
 	return link
 }
 
+func getFilename(in string) string {
+	parts := strings.Split(in, "/")
+	return parts[len(parts)-1]
+}
+
 func crawlNotes(_ context.Context, sourcePath string) ([]string, error) {
 	var filePaths []string
 
