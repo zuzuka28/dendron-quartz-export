@@ -90,7 +90,7 @@ func (e *Exporter) processNote(fname string) error {
 	}
 
 	newFname := strings.ReplaceAll(
-		strings.TrimPrefix(strings.TrimRight(fname, ".md"), e.cfg.DendronNotesPath),
+		strings.TrimPrefix(strings.TrimSuffix(fname, ".md"), e.cfg.DendronNotesPath),
 		".", "/") + ".md"
 
 	if err := writeFile(e.cfg.ExportPath+newFname, content, 0777); err != nil {
@@ -111,7 +111,7 @@ func (e *Exporter) fixFileHierarchy(ctx context.Context) error {
 	}
 
 	for _, fname := range noteFnames {
-		dname := strings.TrimRight(fname, ".md")
+		dname := strings.TrimSuffix(fname, ".md")
 
 		_, err := os.Stat(dname)
 		if err != nil && !errors.Is(err, os.ErrNotExist) {
