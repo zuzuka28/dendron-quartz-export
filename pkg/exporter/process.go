@@ -93,7 +93,7 @@ func dendronToObsidianFlavour() ProcessFunc {
 				hierarcy := strings.Split(r, ".")
 				l := strings.ReplaceAll(hierarcy[len(hierarcy)-1], "-", " ")
 
-				splitted = []string{l, r}
+				splitted = []string{r, l}
 
 			case 2: //nolint:mnd
 				r, l := splitted[0], splitted[1]
