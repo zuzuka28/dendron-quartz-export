@@ -81,7 +81,21 @@ func dendronToObsidianFlavour() ProcessFunc {
 			splitted := strings.Split(s, "|")
 
 			// dendron has links like [[title|link]], we need [[link|title]]
-			if len(splitted) == 2 {
+			switch len(splitted) {
+			case 1:
+				r := splitted[0]
+
+				// it's raw link like 'assets/...'
+				if strings.Contains(r, "/") {
+					break
+				}
+
+				hierarcy := strings.Split(r, ".")
+				l := strings.ReplaceAll(hierarcy[len(hierarcy)-1], "-", " ")
+
+				splitted = []string{l, r}
+
+			case 2: //nolint:mnd
 				r, l := splitted[0], splitted[1]
 				splitted = []string{l, r}
 			}
